@@ -91,35 +91,38 @@ gui.add(options, "wireframe").onChange(function (e) {
 let step = 0;
 let speed = 0.01;
 
-const assetLoader = new GLTFLoader();
-assetLoader.load(
-  dinoUrl.href,
-  function (gltf) {
-    console.log(gltf.animations);
-  },
-  undefined,
-  function (error) {
-    console.error(error);
-  }
-);
-
 let mixer;
 let Player_anim_IDLE;
 let Player_anim_RUN;
 
 const assetFBX = new FBXLoader();
-assetFBX.load(
-  dinoUrlFBX.href,
-  function (fbx) {
-    console.log(fbx.animations);
-    mixer = new THREE.AnimationMixer(fbx.scene);
-    Player_anim_IDLE = fbx.animations[0]; // first animation
-    Player_anim_RUN = fbx.animations[1]; // second animation
+// assetFBX.load(
+//   dinoUrlFBX.href,
+//   function (fbx) {
+//     console.log(fbx.animations);
+//     mixer = new THREE.AnimationMixer(fbx.scene);
+//     Player_anim_IDLE = fbx.animations[0]; // first animation
+//     Player_anim_RUN = fbx.animations[1]; // second animation
 
-    mixer.clipAction(Player_anim_IDLE).play();
+//     mixer.clipAction(Player_anim_IDLE).play();
 
-    MainPlayer = fbx.scene;
-    scene.add(MainPlayer);
+//     MainPlayer = fbx.scene;
+//     scene.add(MainPlayer);
+//   },
+//   undefined,
+//   function (error) {
+//     console.error(error);
+//   }
+// );
+
+const assetLoader = new GLTFLoader();
+assetLoader.load(
+  dinoUrl.href,
+  function (gltf) {
+    const dino = gltf.scene;
+    scene.add(dino);
+    dino.position.set(0, 0, 0);
+    dino.scale.set(0.01, 0.01, 0.01);
   },
   undefined,
   function (error) {
