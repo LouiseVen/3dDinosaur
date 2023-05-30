@@ -3,11 +3,12 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import * as dat from "dat.gui";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
 
 const dinoUrl = new URL("assets/Parasaurolophus.gltf", import.meta.url);
 const dinoUrlFBX = new URL("assets/Parasaurolophus.fbx", import.meta.url);
 const monkeyUrl = new URL("assets/monkey.glb", import.meta.url);
-
+const dinoUrlOBJ = new URL("assets/Velociraptor.obj", import.meta.url);
 const renderer = new THREE.WebGLRenderer();
 
 renderer.shadowMap.enabled = true;
@@ -96,6 +97,9 @@ assetLoader.load(
   dinoUrl.href,
   function (gltf) {
     console.log(gltf.animations);
+    scene.add(dinoUrl);
+    dinoUrl.position.set(0, 0, 0);
+    dinoUrl.scale.set(0.01, 0.01, 0.01);
   },
   undefined,
   function (error) {
@@ -103,29 +107,49 @@ assetLoader.load(
   }
 );
 
-let mixer;
-let Player_anim_IDLE;
-let Player_anim_RUN;
+// let mixer;
+// let Player_anim_IDLE;
+// let Player_anim_RUN;
 
-const assetFBX = new FBXLoader();
-assetFBX.load(
-  dinoUrlFBX.href,
-  function (fbx) {
-    console.log(fbx.animations);
-    mixer = new THREE.AnimationMixer(fbx.scene);
-    Player_anim_IDLE = fbx.animations[0]; // first animation
-    Player_anim_RUN = fbx.animations[1]; // second animation
+// const assetFBX = new FBXLoader();
+// assetFBX.load(
+//   dinoUrlFBX.href,
+//   function (fbx) {
+//     console.log(fbx.animations);
+//     mixer = new THREE.AnimationMixer(fbx.scene);
+//     Player_anim_IDLE = fbx.animations[0]; // first animation
+//     Player_anim_RUN = fbx.animations[1]; // second animation
 
-    mixer.clipAction(Player_anim_IDLE).play();
+//     mixer.clipAction(Player_anim_IDLE).play();
 
-    MainPlayer = fbx.scene;
-    scene.add(MainPlayer);
-  },
-  undefined,
-  function (error) {
-    console.error(error);
-  }
-);
+//     MainPlayer = fbx.scene;
+//     scene.add(MainPlayer);
+//   },
+//   undefined,
+//   function (error) {
+//     console.error(error);
+//   }
+// );
+
+// const assetOBJ = new OBJLoader();
+// assetOBJ.load(
+//   dinoUrlOBJ.href,
+//   function (obj) {
+//     console.log(obj.animations);
+//     mixer = new THREE.AnimationMixer(obj.scene);
+//     Player_anim_IDLE = obj.animations[0]; // first animation
+//     Player_anim_RUN = obj.animations[1]; // second animation
+
+//     mixer.clipAction(Player_anim_IDLE).play();
+
+//     MainPlayer = obj.scene;
+//     scene.add(MainPlayer);
+//   },
+//   undefined,
+//   function (error) {
+//     console.error(error);
+//   }
+// );
 
 function animate() {
   box.rotation.x += 0.01;
