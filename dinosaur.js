@@ -1,10 +1,11 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-
+import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
+import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 // Models
 
-const dinoUrl = new URL("assets/Parasaurolophus.gltf", import.meta.url);
+const dinoUrl = new URL("assets/source/trex1.glb", import.meta.url);
 
 // Initialization
 
@@ -53,19 +54,44 @@ plane.receiveShadow = true;
 //Dino
 
 const assetLoader = new GLTFLoader();
+
 assetLoader.load(
   dinoUrl.href,
   function (gltf) {
-    const dino = gltf.scene;
-    scene.add(dino);
-    dino.position.set(0, 0, 0);
-    dino.scale.set(0.01, 0.01, 0.01);
+    const model = gltf.scene;
+    console.log(gltf.animations);
+    scene.add(model);
+    model.position.set(0, 0, 0);
+    model.scale.set(1, 1, 1);
+
+    const m = new THREE.AnimationMixer(gltf);
+    const mixer_ = m;
+
+    for (let i = 0; i < gltf.animations.length; ++i) {
+      if (gltf.animations[i].name.includes('Run')) {
+        const clip = gltf.animations[i];
+        const action = mixer_.clipAction(clip);
+        action.play();
+      }
+    }
+    // const mixer = new THREE.AnimationMixer(model);
+    // const animationAction = mixer.clipAction((model).animations[0]);
+    // animationActions.push(animationAction);
+    // activeAction = animationActions[0];
   },
   undefined,
   function (error) {
     console.error(error);
   }
 );
+
+// const anim = new GLTFLoader();
+// anim.load(dinoUrl.href, (anim) => {
+//   this.mixer = new THREE.AnimationMixer(gltf);
+//   const idle = this.mixer.clipAction(anim.animations[0]);
+//   idle.play();
+// });
+// 
 
 // Light
 
@@ -82,36 +108,8 @@ directionalLight.shadow.camera.top = 12;
 const dLightHelper = new THREE.DirectionalLightHelper(directionalLight);
 scene.add(dLightHelper);
 
-let step = 1;
-let speed = 0.01;
-
-let mixer;
-let Player_anim_IDLE;
-let Player_anim_RUN;
-
-let loader = new GLTFLoader();
-loader.load(dinoUrl.href, function (gltf) {
-  mixer = new THREE.AnimationMixer(gltf.scene);
-  Player_anim_IDLE = gltf.animations[0]; // first animation
-  Player_anim_RUN = gltf.animations[1]; // second animation
-
-  mixer.clipAction( Player_anim_IDLE).play();
-
-  MainPlayer = gltf.scene;
-    scene.add(MainPlayer);
-});
-
 function animate() {
-  step += speed;
-
   renderer.render(scene, camera);
 }
 
-function animation()
-{
-  
-  var delta = clock.getDelta();
-  mixer.update( delta );
-}
-
-renderer.setAnimationLoop(animation);
+renderer.setAnimationLoop(animate);

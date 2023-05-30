@@ -3,11 +3,12 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import * as dat from "dat.gui";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
 
 const dinoUrl = new URL("assets/Parasaurolophus.gltf", import.meta.url);
 const dinoUrlFBX = new URL("assets/Parasaurolophus.fbx", import.meta.url);
 const monkeyUrl = new URL("assets/monkey.glb", import.meta.url);
-
+const dinoUrlOBJ = new URL("assets/Velociraptor.obj", import.meta.url);
 const renderer = new THREE.WebGLRenderer();
 
 renderer.shadowMap.enabled = true;
