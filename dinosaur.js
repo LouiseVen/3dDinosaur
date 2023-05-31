@@ -54,7 +54,7 @@ plane.receiveShadow = true;
 //Dino
 
 const assetLoader = new GLTFLoader();
-
+let mixer;
 assetLoader.load(
   dinoUrl.href,
   function (gltf) {
@@ -64,16 +64,22 @@ assetLoader.load(
     model.position.set(0, 0, 0);
     model.scale.set(1, 1, 1);
 
-    const m = new THREE.AnimationMixer(gltf);
-    const mixer_ = m;
+    const m = new THREE.AnimationMixer(gltf.scene);
+    mixer = m;
 
     for (let i = 0; i < gltf.animations.length; ++i) {
-      if (gltf.animations[i].name.includes('Run')) {
+      if (gltf.animations[i].name.includes('run')) {
         const clip = gltf.animations[i];
-        const action = mixer_.clipAction(clip);
+        const action = mixer.clipAction(clip);
         action.play();
       }
     }
+    // Play animation randomly every 1-10s.
+// setInterval(() => {
+//   action
+//     .reset()
+//     .play();
+// }, Math.random() * 9000 + 1000);
     // const mixer = new THREE.AnimationMixer(model);
     // const animationAction = mixer.clipAction((model).animations[0]);
     // animationActions.push(animationAction);
@@ -108,7 +114,13 @@ directionalLight.shadow.camera.top = 12;
 const dLightHelper = new THREE.DirectionalLightHelper(directionalLight);
 scene.add(dLightHelper);
 
+const clock = new THREE.Clock();
 function animate() {
+  if (mixer) {
+    mixer.update(clock.getDelta());
+  }
+  
+
   renderer.render(scene, camera);
 }
 
