@@ -206,7 +206,7 @@ if (dinoRender) {
       // const animationAction = mixer.clipAction((model).animations[0]);
       // animationActions.push(animationAction);
       // activeAction = animationActions[0];
-      if (localStorage.getItem('steakEnabled') == true) {
+      if (localStorage.getItem('steakEnabled') == "false") {
         setInterval(playRandomAnimation, 10000);
       } else {
         animationSpecified();
@@ -250,7 +250,7 @@ if (dinoRender) {
   const textureSteakLoader = new MTLLoader();
   let steak;
 
-  if (localStorage.getItem('steakEnabled') == true) {
+  if (localStorage.getItem('steakEnabled') == "true") {
 
     textureSteakLoader.load(
       textureSteakUrl.href,
@@ -412,7 +412,7 @@ if (dinoRender) {
       mixer.update(clock.getDelta());
     }
 
-    if (localStorage.getItem('steakEnabled') == true) {
+    if (localStorage.getItem('steakEnabled') == "true") {
       console.log(steakEnabled);
       console.log(steak);
       console.log(steak.position.x);
